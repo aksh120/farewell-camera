@@ -142,16 +142,46 @@ export function usePhotos() {
 
   useEffect(() => {
     const channel = supabase
-      .channel("photos-changes")
+      .channel("photos-realtime")
       .on(
         "postgres_changes",
         {
-          event: "*",
+          event: "INSERT",
           schema: "public",
           table: SUPABASE_SETTINGS.tableName,
         },
-        () => {
-          fetchPhotos();
+        (payload) => {
+          const newPhoto = payload.new as Photo;
+          setPhotos((prev) => {
+            if (prev.some((p) => p.id === newPhoto.id)) return prev;
+            return [newPhoto, ...prev];
+          });
+        },
+      )
+      .on(
+        "postgres_changes",
+        {
+          event: "DELETE",
+          schema: "public",
+          table: SUPABASE_SETTINGS.tableName,
+        },
+        (payload) => {
+          const deletedId = payload.old.id;
+          setPhotos((prev) => prev.filter((p) => p.id !== deletedId));
+        },
+      )
+      .on(
+        "postgres_changes",
+        {
+          event: "UPDATE",
+          schema: "public",
+          table: SUPABASE_SETTINGS.tableName,
+        },
+        (payload) => {
+          const updatedPhoto = payload.new as Photo;
+          setPhotos((prev) =>
+            prev.map((p) => (p.id === updatedPhoto.id ? updatedPhoto : p)),
+          );
         },
       )
       .subscribe();
@@ -159,7 +189,7 @@ export function usePhotos() {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [fetchPhotos]);
+  }, []);
 
   return {
     photos,

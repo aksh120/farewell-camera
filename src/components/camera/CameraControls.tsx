@@ -93,30 +93,43 @@ export function CameraControls({
             />
 
             {}
-            <button
-              onClick={onCapture}
-              disabled={isCapturing}
-              className={`
-                w-[72px] h-[72px] rounded-full
-                bg-vintage-cream
-                border-4 border-vintage-cream
-                shadow-lg
-                transition-all duration-150
-                focus:outline-none focus:ring-4 focus:ring-vintage-cream/30
-                disabled:opacity-70
-                ${isCapturing ? "scale-90" : "hover:scale-105 active:scale-95"}
-              `}
-              aria-label="Take photo"
-            >
-              <div
+            <div className="flex items-center gap-4">
+              {hasMultipleCameras && (
+                <IconButton
+                  icon={RefreshCcw}
+                  label="Switch camera"
+                  onClick={onSwitchCamera}
+                  size="md"
+                  variant="ghost"
+                  className="bg-black/30 backdrop-blur-sm"
+                />
+              )}
+
+              <button
+                onClick={onCapture}
+                disabled={isCapturing}
                 className={`
-                  w-full h-full rounded-full
-                  border-2 border-vintage-charcoal/20
+                  w-[72px] h-[72px] rounded-full
+                  bg-vintage-cream
+                  border-4 border-vintage-cream
+                  shadow-lg
                   transition-all duration-150
-                  ${isCapturing ? "bg-vintage-beige" : "bg-vintage-cream"}
+                  focus:outline-none focus:ring-4 focus:ring-vintage-cream/30
+                  disabled:opacity-70
+                  ${isCapturing ? "scale-90" : "hover:scale-105 active:scale-95"}
                 `}
-              />
-            </button>
+                aria-label="Take photo"
+              >
+                <div
+                  className={`
+                    w-full h-full rounded-full
+                    border-2 border-vintage-charcoal/20
+                    transition-all duration-150
+                    ${isCapturing ? "bg-vintage-beige" : "bg-vintage-cream"}
+                  `}
+                />
+              </button>
+            </div>
 
             {}
             <Link href="/gallery">

@@ -102,49 +102,47 @@ export function CameraView() {
     setIsFilterMenuOpen((prev) => !prev);
   }, []);
 
-  const isInitializing = permissionState === "prompt" && !stream;
-
   return (
     <div className="relative w-full h-full bg-vintage-black overflow-hidden">
-      { }
+      {}
       <canvas ref={canvasRef} className="hidden" />
 
-      { }
-      {isInitializing && (
-        <div className="absolute inset-0 flex items-center justify-center bg-vintage-black z-20">
-          <div className="absolute left-4 top-0 bottom-0 w-8 bg-vintage-charcoal/20 flex flex-col justify-between py-2 hidden sm:flex">
-            {[...Array(12)].map((_, i) => (
-              <div key={i} className="w-4 h-6 mx-auto rounded-sm bg-vintage-black/60 border border-vintage-cream/5" />
-            ))}
-          </div>
-
-          <div className="relative flex flex-col items-center">
-            <div className="relative">
-              <div className="absolute inset-0 rounded-full border-4 border-vintage-charcoal animate-pulse" />
-              <LoadingSpinner size="lg" className="border-vintage-amber" />
-            </div>
-
-            <div className="mt-6 flex flex-col items-center gap-2">
-              <p className="text-vintage-cream font-bold tracking-widest uppercase text-sm animate-pulse">
-                Initializing Film
-              </p>
-              <div className="flex gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-vintage-amber/50 animate-bounce [animation-delay:-0.3s]" />
-                <span className="w-1.5 h-1.5 rounded-full bg-vintage-amber/50 animate-bounce [animation-delay:-0.15s]" />
-                <span className="w-1.5 h-1.5 rounded-full bg-vintage-amber/50 animate-bounce" />
+      {}
+      {!stream &&
+        permissionState !== "denied" &&
+        permissionState !== "unsupported" && (
+          <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+            <div
+              className="
+            bg-black/40 backdrop-blur-md 
+            px-8 py-6 rounded-2xl 
+            flex flex-col items-center gap-4 
+            border border-white/10 shadow-2xl 
+            animate-in fade-in zoom-in duration-300
+          "
+            >
+              <div className="relative">
+                <div className="absolute inset-0 rounded-full border-2 border-vintage-cream/10" />
+                <LoadingSpinner
+                  size="lg"
+                  className="border-vintage-amber border-t-vintage-cream"
+                />
+              </div>
+              <div className="flex flex-col items-center gap-1">
+                <p className="text-vintage-cream text-xs font-bold tracking-[0.2em] uppercase">
+                  Loading Film
+                </p>
+                <div className="flex gap-1 h-1">
+                  <div className="w-1 h-1 rounded-full bg-vintage-amber animate-bounce [animation-delay:-0.3s]" />
+                  <div className="w-1 h-1 rounded-full bg-vintage-amber animate-bounce [animation-delay:-0.15s]" />
+                  <div className="w-1 h-1 rounded-full bg-vintage-amber animate-bounce" />
+                </div>
               </div>
             </div>
           </div>
+        )}
 
-          <div className="absolute right-4 top-0 bottom-0 w-8 bg-vintage-charcoal/20 flex flex-col justify-between py-2 hidden sm:flex">
-            {[...Array(12)].map((_, i) => (
-              <div key={i} className="w-4 h-6 mx-auto rounded-sm bg-vintage-black/60 border border-vintage-cream/5" />
-            ))}
-          </div>
-        </div>
-      )}
-
-      { }
+      {}
       {(permissionState === "denied" || permissionState === "unsupported") && (
         <PermissionRequest
           permissionState={permissionState}
@@ -153,35 +151,33 @@ export function CameraView() {
         />
       )}
 
-      { }
+      {}
+      {stream && <FilmReelEdges />}
+      <video
+        ref={videoRef}
+        autoPlay
+        playsInline
+        muted
+        className={`
+          absolute inset-0 w-full h-full object-cover
+          ${facingMode === "user" ? "scale-x-[-1]" : ""}
+          ${!stream ? "invisible" : ""}
+        `}
+        style={{
+          filter: selectedFilter.cssFilter,
+          clipPath: "inset(0 20px 0 20px)",
+        }}
+      />
+
       {stream && (
         <>
-          { }
-          <FilmReelEdges />
-
-          <video
-            ref={videoRef}
-            autoPlay
-            playsInline
-            muted
-            className={`
-              absolute inset-0 w-full h-full object-cover
-              ${facingMode === "user" ? "scale-x-[-1]" : ""}
-            `}
-            style={{
-              filter: selectedFilter.cssFilter,
-
-              clipPath: "inset(0 20px 0 20px)",
-            }}
-          />
-
-          { }
+          {}
           <VintageOverlay intensity={selectedFilter.id === "none" ? 0 : 1} />
 
-          { }
+          {}
           <ShutterFlash visible={showFlash} />
 
-          { }
+          {}
           <FilterMenu
             selectedFilter={selectedFilter}
             onSelectFilter={setSelectedFilter}
@@ -189,7 +185,7 @@ export function CameraView() {
             onToggle={toggleFilterMenu}
           />
 
-          { }
+          {}
           <CameraControls
             onCapture={handleCapture}
             onUpload={handleUpload}

@@ -39,11 +39,22 @@ export function useCamera() {
     try {
       const devices = await navigator.mediaDevices.enumerateDevices();
       const videoDevices = devices.filter((d) => d.kind === "videoinput");
+
+      const hasMultiple = videoDevices.length > 1;
+
+      const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
       setState((prev) => ({
         ...prev,
-        hasMultipleCameras: videoDevices.length > 1,
+        hasMultipleCameras: hasMultiple || isMobile,
       }));
-    } catch { }
+    } catch {
+      const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+      setState((prev) => ({
+        ...prev,
+        hasMultipleCameras: isMobile,
+      }));
+    }
   }, []);
 
   const startCamera = useCallback(
@@ -62,6 +73,9 @@ export function useCamera() {
           video: {
             ...CAMERA_SETTINGS.videoConstraints,
             facingMode: { ideal: mode },
+            //facingMode: mode,
+            //width: { ideal: 1280 },
+            //height: { ideal: 720 },
           },
           audio: false,
         };
@@ -70,24 +84,18 @@ export function useCamera() {
         streamRef.current = stream;
 
         const track = stream.getVideoTracks()[0];
-        const capabilities =
-          track.getCapabilities?.() as MediaTrackCapabilities & {
-            torch?: boolean;
-          };
-        const isFlashSupported = !!capabilities?.torch;
+        let isFlashSupported = false;
+        try {
+          const capabilities =
+            track.getCapabilities?.() as MediaTrackCapabilities & {
+              torch?: boolean;
+            };
+          isFlashSupported = !!capabilities?.torch;
+        } catch { }
 
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
-
-          await new Promise<void>((resolve) => {
-            if (videoRef.current) {
-              videoRef.current.onloadedmetadata = () => {
-                videoRef.current?.play().then(resolve).catch(resolve);
-              };
-            } else {
-              resolve();
-            }
-          });
+          videoRef.current.play().catch(() => { });
         }
 
         setState((prev) => ({
@@ -99,7 +107,7 @@ export function useCamera() {
           error: null,
         }));
 
-        await checkMultipleCameras();
+        checkMultipleCameras();
       } catch (err) {
         const error = err as Error;
         let permissionState: CameraState["permissionState"] = "denied";
@@ -193,6 +201,15 @@ export function useCamera() {
       }
     };
   }, []);
+
+  useEffect(() => {
+    if (videoRef.current && streamRef.current) {
+      if (videoRef.current.srcObject !== streamRef.current) {
+        videoRef.current.srcObject = streamRef.current;
+        videoRef.current.play().catch(() => { });
+      }
+    }
+  }, [state.stream]);
 
   return {
     videoRef,

@@ -49,16 +49,21 @@ export async function uploadImage(
 
 export async function deleteImage(path: string): Promise<boolean> {
   try {
-    const { error } = await supabase.storage.from(PHOTOS_BUCKET).remove([path]);
+    console.log("Attempting to delete from storage:", path);
+
+    const { data, error } = await supabase.storage
+      .from(PHOTOS_BUCKET)
+      .remove([path]);
 
     if (error) {
-      console.error("Delete error:", error);
+      console.error("Storage delete error:", error.message, error);
       return false;
     }
 
+    console.log("Storage delete result:", data);
     return true;
   } catch (err) {
-    console.error("Delete failed:", err);
+    console.error("Storage delete failed:", err);
     return false;
   }
 }

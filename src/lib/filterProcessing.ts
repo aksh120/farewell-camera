@@ -128,10 +128,10 @@ function addFilmBorders(
 
   const isLandscape = originalWidth > originalHeight;
 
-  const borderSize = Math.round(Math.min(originalWidth, originalHeight) * 0.04);
-  const sprocketWidth = Math.round(borderSize * 0.6);
-  const sprocketHeight = Math.round(borderSize * 0.8);
-  const sprocketGap = Math.round(borderSize * 1.2);
+  const borderSize = Math.round(Math.min(originalWidth, originalHeight) * 0.07);
+  const sprocketWidth = Math.round(borderSize * 0.55);
+  const sprocketHeight = Math.round(borderSize * 0.7);
+  const sprocketGap = Math.round(borderSize * 1.0);
 
   const newCanvas = document.createElement("canvas");
 

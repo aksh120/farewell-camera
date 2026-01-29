@@ -1,4 +1,4 @@
-export const APP_NAME = "Disposable";
+export const APP_NAME = "Farewell Camera";
 export const APP_DESCRIPTION = "A vintage camera experience in your browser";
 
 export const IMAGE_SETTINGS = {

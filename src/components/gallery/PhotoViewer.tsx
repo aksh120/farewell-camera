@@ -28,7 +28,7 @@ export function PhotoViewer({ photo, onClose, onDelete }: PhotoViewerProps) {
   const [error, setError] = useState("");
 
   const handleDownload = () => {
-    const filename = `disposable_${new Date(photo.created_at).getTime()}.jpg`;
+    const filename = `farewell_${new Date(photo.created_at).getTime()}.jpg`;
     downloadImage(photo.url, filename);
   };
 
@@ -69,7 +69,7 @@ export function PhotoViewer({ photo, onClose, onDelete }: PhotoViewerProps) {
       className="fixed inset-0 z-50 modal-backdrop bg-black/90 backdrop-blur-sm"
       onClick={handleBackdropClick}
     >
-      {}
+      { }
       <div className="absolute top-0 left-0 right-0 safe-area-inset-top z-10">
         <div className="flex items-center justify-between p-4">
           <IconButton
@@ -100,7 +100,7 @@ export function PhotoViewer({ photo, onClose, onDelete }: PhotoViewerProps) {
         </div>
       </div>
 
-      {}
+      { }
       <div className="absolute inset-0 flex items-center justify-center p-4">
         <img
           src={photo.url}
@@ -114,7 +114,7 @@ export function PhotoViewer({ photo, onClose, onDelete }: PhotoViewerProps) {
         />
       </div>
 
-      {}
+      { }
       <div className="absolute bottom-0 left-0 right-0 safe-area-inset-bottom">
         <div className="p-4 bg-gradient-to-t from-black/60 to-transparent">
           <div className="flex items-center gap-2 text-vintage-cream/80">

@@ -1,6 +1,6 @@
 {
-  "name": "Disposable Camera",
-  "short_name": "Disposable",
+  "name": "Farewell Camera",
+  "short_name": "Farewell",
   "description": "A vintage camera experience in your browser",
   "start_url": "/",
   "display": "standalone",

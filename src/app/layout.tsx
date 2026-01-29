@@ -10,7 +10,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Disposable | Vintage Camera",
+  title: "Farewell Vintage Camera",
   description:
     "Capture beautiful moments with a vintage camera experience in your browser. Film grain, light leaks, and nostalgic vibes.",
   keywords: [
@@ -18,12 +18,12 @@ export const metadata: Metadata = {
     "vintage",
     "film",
     "photography",
-    "disposable camera",
+    "camera",
     "retro",
   ],
-  authors: [{ name: "Disposable Camera" }],
+  authors: [{ name: "Farewell Camera" }],
   openGraph: {
-    title: "Disposable | Vintage Camera",
+    title: "Farewell Vintage Camera",
     description: "A vintage camera experience in your browser",
     type: "website",
   },
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "Disposable",
+    title: "Farewell Camera",
   },
 };
 

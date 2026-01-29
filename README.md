@@ -39,8 +39,8 @@ A nostalgic, vintage-style camera application built for the web. Capture moments
 ### 1. Clone & Install
 
 ```bash
-git clone https://github.com/yourusername/disposable-camera.git
-cd disposable-camera
+git clone https://github.com/yourusername/farewell-camera.git
+cd farewell-camera
 npm install
 ```
 
